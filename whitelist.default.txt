@@ -7,3 +7,5 @@ Vk
 FeedMerge
 Twitch
 ThePirateBay
+DeduplicatePastFilter
+ImpressOtokuSale

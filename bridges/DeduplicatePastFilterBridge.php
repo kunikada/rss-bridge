@@ -44,13 +44,16 @@ class DeduplicatePastFilterBridge extends FeedExpander
 
         $items = $this->loadCacheValue($this->getInput('target'));
         if ($items === null) {
+            Debug::log('items is null');
             return [];
         }
+        Debug::log('items: ' . serialize($items));
 
         $threshold = time() - $this->getInput('duration') * 24 * 60 * 60;
         $filtered = array_filter($items, function($item) use ($threshold) {
             return $item['timestamp'] > $threshold;
         });
+        Debug::log('filterd: ' . serialize($filtered));
 
         $cache = $filtered;
         return $cache;
@@ -58,7 +61,7 @@ class DeduplicatePastFilterBridge extends FeedExpander
 
     private function setPastItems()
     {
-        $this->saveCacheValue($this->getInput('target_url'), array_merge($this->getPastItems(), $this->items));
+        $this->saveCacheValue($this->getInput('target'), array_merge($this->getPastItems(), $this->items));
     }
 
     protected function parseItem($feedItem)
@@ -74,12 +77,14 @@ class DeduplicatePastFilterBridge extends FeedExpander
                 }
             }
         }
+        unset($item['content']);
         return $item;
     }
 
     public function collectData()
     {
         $this->collectExpandableDatas($this->getInput('target'));
+        Debug::log('collect: ' . serialize($this->items));
         $this->setPastItems();
     }
 

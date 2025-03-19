@@ -9,3 +9,4 @@ Twitch
 ThePirateBay
 DeduplicatePastFilter
 ImpressOtokuSale
+UrChintaiNewest

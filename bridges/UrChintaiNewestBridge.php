@@ -26,16 +26,15 @@ class UrChintaiNewestBridge extends BridgeAbstract
     {
         $json = getContents(self::API_ENDPOINT, 
             ['Content-Type: application/x-www-form-urlencoded'],
-            [CURLOPT_POST => 1]
+            [CURLOPT_POST => 1, CURLOPT_POSTFIELDS => 'rent_low=&rent_high=&walk=&floorspace_low=&floorspace_high=&years=&mode=&block=kanto&tdfk=13&rireki_tdfk=13&orderByField=3&pageSize=30&pageIndex=0&shisya=&danchi=&shikibetu=&pageIndexRoom=0&sp=']
         );
         $result = Json::decode($json);
 
         foreach ($result as $bukken) {
-            $danchiNm = $bukken['danchiNm'];
             foreach ($bukken['room'] as $room) {
                 $this->items[] = [
                     'uri' => $this->getUri().$room['roomLinkSp'],
-                    'title' => sprintf('%s %s %s', $danchiNm, $room['roomNmMain'], $room['roomNmSub']),
+                    'title' => sprintf('%s %s %s', $bukken['danchiNm'], $room['roomNmMain'], $room['roomNmSub']),
                     //'timestamp' => 
                     'author' => self::AUTHOR,
                     'content' => sprintf('%s(%s) %s&frasl;%s %s', $room['rent'], $room['commonfee'], $room['type'], $room['floorspace'], $room['floor']),
